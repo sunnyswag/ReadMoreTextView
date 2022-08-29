@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
@@ -30,6 +31,11 @@ class ReadMoreTextView: AppCompatTextView {
     private class ReadMoreClickableSpan(val context: Context): ClickableSpan() {
         override fun onClick(widget: View) {
             Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun updateDrawState(ds: TextPaint) {
+            ds.color = Color.CYAN
+            ds.isUnderlineText = false // remove the underline
         }
     }
 
