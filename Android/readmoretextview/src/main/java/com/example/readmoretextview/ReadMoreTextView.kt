@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
+import java.lang.ref.WeakReference
 
 // TODO: why need change TextView to AppCompatTextView
 class ReadMoreTextView: AppCompatTextView {
@@ -22,12 +23,25 @@ class ReadMoreTextView: AppCompatTextView {
     /** the text to display when expanded. */
     private lateinit var mExpandedText: CharSequence
 
-    private var mViewMoreSpan: ClickableSpan = ReadMoreClickableSpan(context)
+    private var mViewMoreSpan: ClickableSpan = ReadMoreClickableSpan(this)
 
     private var mPara: Parameter = Parameter.Builder().build()
 
     constructor(context: Context, para: Parameter) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        // TODO: TypedArray analyze
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ReadMoreTextView)
+        mPara.apply {
+            limitMode = typedArray.getInt(R.styleable.ReadMoreTextView_limitMode, Constants.LIMIT_MODE_LINES)
+            limitLines = typedArray.getInt(R.styleable.ReadMoreTextView_limitLines, Constants.DEFAULT_LIMIT_LINES)
+            limitWords = typedArray.getInt(R.styleable.ReadMoreTextView_limitWords, Constants.DEFAULT_LIMIT_WORDS)
+            showFoldedChoice = typedArray.getBoolean(R.styleable.ReadMoreTextView_showFoldedChoice, Constants.SHOW_FOLDED_CHOICE)
+            clickableTextColor = typedArray.getColor(R.styleable.ReadMoreTextView_clickableTextColor, Color.BLUE)
+            expandWords = typedArray.getResourceId(R.styleable.ReadMoreTextView_expandWords, R.string.expand_words)
+            foldWords = typedArray.getResourceId(R.styleable.ReadMoreTextView_expandWords, R.string.fold_words)
+        }
+
+        typedArray.recycle() // TODO: why need this operation
         text = mPara.text
     }
 
@@ -36,9 +50,17 @@ class ReadMoreTextView: AppCompatTextView {
         highlightColor = Color.TRANSPARENT // set background when clicked to transparent
     }
 
-    private class ReadMoreClickableSpan(val context: Context): ClickableSpan() {
+    private class ReadMoreClickableSpan(): ClickableSpan() {
+
+        lateinit var view: WeakReference<View>
+        constructor(context: View) : this() {
+            view = WeakReference(context)
+        }
+
         override fun onClick(widget: View) {
-            Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show()
+            val clickable = view.get()?.isClickable
+            view.get()?.isClickable = !clickable!!
+            Toast.makeText(view.get()?.context, "${view.get()?.isClickable} clicked!", Toast.LENGTH_SHORT).show()
         }
 
         override fun updateDrawState(ds: TextPaint) {
@@ -53,14 +75,17 @@ class ReadMoreTextView: AppCompatTextView {
 
     private fun getDisplayText(text: CharSequence?) :CharSequence {
         return SpannableStringBuilder(text)
-            .append(Constants.ELLIPSIS)
-            .append(mPara.expandWords).apply {
+            .append(R.string.ellipsis.getRes())
+            .append(mPara.expandWords.getRes()).apply {
             setSpan(mViewMoreSpan,
                 this.length - 9, this.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 
+    private fun calculateFoldedText() {
 
+    }
 
+    private fun Int.getRes() = resources.getString(this)
 }

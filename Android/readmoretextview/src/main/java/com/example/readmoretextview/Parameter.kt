@@ -6,13 +6,13 @@ class Parameter(builder: Builder) {
 
     /** the text to display. */
     var text: CharSequence = builder.text
-    val limitMode: Int = builder.limitMode
-    val limitLines: Int = builder.limitLines
-    val limitWords: Int = builder.limitWords
-    val showFoldedChoice: Boolean = builder.showFoldedChoice
-    val clickableTextColor: Int = builder.clickableTextColor
-    val expandWords: String = builder.expandWords
-    val foldWords: String = builder.foldWords
+    var limitMode: Int = builder.limitMode
+    var limitLines: Int = builder.limitLines
+    var limitWords: Int = builder.limitWords
+    var showFoldedChoice: Boolean = builder.showFoldedChoice
+    var clickableTextColor: Int = builder.clickableTextColor
+    var expandWords: Int = builder.expandWords
+    var foldWords: Int = builder.foldWords
 
     class Builder {
         var text: CharSequence = "hello world!"
@@ -21,8 +21,8 @@ class Parameter(builder: Builder) {
         var limitWords: Int = Constants.DEFAULT_LIMIT_WORDS
         var showFoldedChoice: Boolean = Constants.SHOW_FOLDED_CHOICE
         var clickableTextColor: Int = Color.BLUE
-        var expandWords: String = Constants.EXPAND_WORDS
-        var foldWords: String = Constants.FOLD_WORDS
+        var expandWords: Int = R.string.expand_words
+        var foldWords: Int = R.string.fold_words
 
         // TODO: write some annotation
         fun text(text: CharSequence): Builder = apply {
@@ -45,11 +45,11 @@ class Parameter(builder: Builder) {
             this.showFoldedChoice = toggle
         }
 
-        fun expandWords(words: String): Builder = apply {
+        fun expandWords(words: Int): Builder = apply {
             this.expandWords = words
         }
 
-        fun foldWords(words: String): Builder = apply {
+        fun foldWords(words: Int): Builder = apply {
             this.foldWords = words
         }
 

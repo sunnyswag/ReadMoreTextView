@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand_words">read more</string>
+    <string name="fold_words">show less</string>
+    <string name="ellipsis">… </string>
+</resources>

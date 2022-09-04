@@ -15,8 +15,4 @@ object Constants {
     /** when expanded, whether to show folded text choice or not. */
     const val SHOW_FOLDED_CHOICE = true
 
-    const val ELLIPSIS = "... "
-    const val EXPAND_WORDS = "read more"
-    const val FOLD_WORDS = "show less"
-
 }

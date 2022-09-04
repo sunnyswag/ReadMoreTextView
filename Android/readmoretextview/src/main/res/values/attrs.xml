@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ReadMoreTextView">
+        <attr name="expandWords" format="string" />
+        <attr name="foldWords" format="string" />
+        <attr name="limitWords" format="integer" />
+        <attr name="limitLines" format="integer" />
+        <attr name="showFoldedChoice" format="boolean" />
+        <attr name="clickableTextColor" format="color" />
+        <attr name="limitMode" >
+            <enum name="limitModeLine" value="0" />
+            <enum name="limitModeWord" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>
